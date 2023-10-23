@@ -7,7 +7,8 @@ from django.utils import timezone
 
 User = get_user_model()
 # Create your models here.
-
+def get_product_url(obj):
+    return f"{obj.category.slug}/{obj.slug}"
 class Category(models.Model):
     slug = models.SlugField(max_length=100, auto_created=True)
     name = models.CharField(max_length=100, verbose_name='Название категории')
@@ -32,23 +33,27 @@ class Dish(models.Model):
     image1 = models.ImageField(verbose_name='Изображение 1', blank=True)
     image2 = models.ImageField(verbose_name='Изображение 2', blank=True)
     image3 = models.ImageField(verbose_name='Изображение 3', blank=True)
-    image4 = models.ImageField(verbose_name='Изображение 4', blank=True)
     vegan = models.BooleanField(verbose_name="Веган-блюдо", default=False)
     in_stock = models.BooleanField(verbose_name="В наличии", default=True)
     weight = models.DecimalField(verbose_name='Вес',max_digits=5, decimal_places=2, blank=True)
-    calories = models.DecimalField(verbose_name='Калории',max_digits=5, decimal_places=2, blank=True)
-    proteins = models.DecimalField(verbose_name='Белки',max_digits=5, decimal_places=2, blank=True)
-    fats = models.DecimalField(verbose_name='Жиры',max_digits=5, decimal_places=2, blank=True)
-    carb = models.DecimalField(verbose_name='Углеводы',max_digits=5, decimal_places=2, blank=True)
+    calories = models.DecimalField(verbose_name='Калории',max_digits=5, decimal_places=1, blank=True)
+    proteins = models.DecimalField(verbose_name='Белки',max_digits=5, decimal_places=1, blank=True)
+    fats = models.DecimalField(verbose_name='Жиры',max_digits=5, decimal_places=1, blank=True)
+    carb = models.DecimalField(verbose_name='Углеводы',max_digits=5, decimal_places=1, blank=True)
     description = models.TextField(verbose_name='Описание', blank=True)
     price = models.DecimalField(verbose_name='Цена',max_digits=5, decimal_places=2)
 
+    def get_product_url(obj):
+        return f"dish/{obj.category.slug}/{obj.slug}"
     def __str__(self):
         return self.title
 
     def get_model_name(self):
         return self.__class__.__name__.lower()
 
+    class Meta:
+        verbose_name = 'Блюдо'
+        verbose_name_plural = ' Блюда'
 
 class Employee(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)

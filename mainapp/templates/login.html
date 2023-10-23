@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+   <section class="main-content">
+
+      <div class="container min-h-800 mt-4 d-flex flex-column align-items-center">
+         <h1 class="text-center">История заказов</h1>
+         <form class="col-md-4  mt-4 border {% if form.non_field_errors %} invalid-form  {% endif %}" method="POST">
+             {% csrf_token %}
+         <div class="mb-3 px-3 pt-3">
+         {% for f in form %}
+
+              <label for="{{ f.id_for_label }}" class="form-label fs-3 w-100 text-center {% if form.non_field_errors %} was-validated {% endif %}">{{ f.label }}</label>
+                {{ f }}
+
+
+         {% endfor %}
+         </div>
+            <div class="mb-3 p-3 ">
+               <button type="submit" class="btn w-100 btn-primary btn-login px-3">Войти</button>
+            </div>
+          </form>
+          <p class="text-center mt-3">Для восстановления пароля обратитесь сюда<br> help@tehvizor.ru</p>
+      </div>
+   </section>
+{% endblock content %}
+
+

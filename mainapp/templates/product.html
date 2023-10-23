@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+       <section class="main-content min-h-800">
+
+
+      <div class="container">
+         <div class="d-flex justify-content-between align-items-center my-4">
+            <nav aria-label="breadcrumb m-0">
+               <ol class="breadcrumb m-0">
+                  <li class="breadcrumb-item"><a href="#">{{ dish.category }}</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{ dish.title }}</li>
+               </ol>
+            </nav>
+            <a href="cart.html" class="basketa basketa_big d-flex"><div class="basket_hover"></div><i class="bi bi-basket3-fill t123"></i><i class="bi bi-basket3"></i><p class="m-0 fs-5 cart_count">3</p></a>
+         </div>
+
+
+         <div class="row container m-0 p-0">
+            <!--  -->
+            <div class="container col-md-5 border shadow m-0 p-0 h380p">
+               <div id="carouselExampleDark" class="carousel carousel-dark slide h-100 d-flex column justify-content-center align-items-center" data-bs-ride="carousel">
+                  <div class="carousel-indicators">
+                  {% if dish.image2.url != '' or dish.image3.url != '' %}
+                      {% if dish.image1.url != '' %}
+                     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                      {% endif %}
+                  {% if dish.image2.url != '' %}
+                     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                  {% endif %}
+                  {% if dish.image3.url != '' %}
+                     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                  {% endif %}
+                  {% endif %}
+                  </div>
+                  <div class="carousel-inner">
+                      {% if dish.image1.url != '' %}
+                         <div class="carousel-item active" data-bs-interval="10000">
+                            <img src="{{ dish.image1.url }}" class="d-block w-100 dish_img" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                            </div>
+                         </div>
+                      {% endif %}
+                      {% if dish.image2.url != '' %}
+                     <div class="carousel-item" data-bs-interval="2000">
+                        <img src="{{ dish.image2.url }}" class="d-block w-100 dish_img" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                        </div>
+                     </div>
+                    {% endif %}
+                     {% if dish.image3.url != '' %}
+                     <div class="carousel-item">
+                        <img src="{{ dish.image3.url }}" class="d-block w-100 dish_img" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                        </div>
+                     </div>
+                    {% endif %}
+                  </div>
+               {% if dish.image2.url != '' or dish.image3.url != '' %}
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                     data-bs-slide="prev">
+                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                     <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                     data-bs-slide="next">
+                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                     <span class="visually-hidden">Next</span>
+                  </button>
+               {% endif %}
+               </div>
+            </div>
+            <!--  -->
+            <div class="col-md-1"></div>
+            <div class="col-md-6">
+               <h2 class="dark-grey mb-3">Характеристики</h2>
+               <h4 class="dark-grey">Вес: {{ dish.weight }}</h4>
+               <h4 class="dark-grey">Веган-блюдо: {% if dish.category == True %} Да {% else %} Нет {% endif %}</h4>
+               <h4 class="dark-grey">Категория: {{ dish.category }}</h4>
+               <h4 class="dark-grey">Пицевая ценность/100гр: {{ dish.calories }}Ккал, {{ dish.proteins }}Б, {{ dish.fats }}Ж, {{ dish.carb }}У</h4>
+               <div class="d-flex align-items-center mt-5">
+                  <h2 class="fs-1 mb-0 fw-bold me-4">{{ dish.price }}₽</h2>
+                  <span class="count me-4">
+                     <span class="change minus min">
+                         <span>-</span>
+                     </span>
+                     <input type="text" name="productСount" value="1">
+                     <span class="change plus">
+                         <span>+</span>
+                     </span>
+                 </span>
+                  <a href="#" class="btn btn-success order fw-normal fs-3 d-flex">
+                     Добавить <i class="bi bi-basket3-fill"></i></a>
+               </div>
+
+            </div>
+         </div>
+
+      </div>
+      <div class="container mt-4">
+         <h1 class="py-2">Характеристики</h1>
+         <p class="fs-5">{{ dish.description }}</p>
+      </div>
+   </section>
+{% endblock content %}
+
+

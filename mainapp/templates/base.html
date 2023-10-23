@@ -1,10 +1,178 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+   <header class="">
+
+      <nav class="navbar navbar-expand-xl navbar-light navbar">
+         <div class="container">
+            <a class="navbar-brand fs-3" href="{% url 'main' %}">ТехноЕда</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+               aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse show" id="navbarText">
+               <ul class="navbar-nav me-auto mb-2 mb-xl-0">
+                  <li class="nav-item">
+                     <a class="nav-link active fs-6" aria-current="page" href="{% url 'main' %}">Меню</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link fs-6" href="history.html">История заказов</a>
+                  </li>
+               </ul>
+
+               <a class="nav-link" href="{% url 'login' %}">Авторизация</a>
+
+            </div>
+         </div>
+      </nav>
+   </header>
+{% block content %}
+   <section class="main-content">
+
+
+      <div class="container mt-4">
+         <div class="d-flex justify-content-between align-items-center">
+            <h1>Меню</h1>
+            <a href="dish.html" class="basketa basketa_big d-flex"><div class="basket_hover"></div><i class="bi bi-basket3-fill t123"></i><i class="bi bi-basket3"></i><p class="m-0 fs-5 cart_count">3</p></a>
+         </div>
+
+         <!-- Поиск и фильтры -->
+         <div class="row d-flex justify-content-center align-items-center mt-3 mb-4">
+            <div class="col-md-12 ">
+               <div class="card ">
+
+                  <div class="search_content row g-4 d-flex justify-content-between align-items-center mt-3">
+                     <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                        aria-controls="collapseExample" class="advanced col-md-1 ms-3">
+                        Фильтры <i class="bi bi-sort-down"></i>
+                     </a>
+                     <div class="col-md-2">
+
+                        <select class="form-select-sm sort-by btn btn-secondary dropdown-toggle">
+
+                           <option selected disabled selected>Сортировка</option>
+                           <option value="0" >По умолчанию</option>
+                           <option value="1">По возрастанию цены</option>
+                           <option value="2">По убыванию цены</option>
+                           <option value="3">По алфавиту (А-Я)</option>
+                           <option value="4">По алфавиту (Я-А)</option>
+                        </select>
+                     </div>
+                     <div class="col-lg-8 col-md-6 d-flex me-3">
+
+                        <input type="text" class="form-control d-flex me-4"
+                           placeholder="Введите название блюда">
+                              <button class="search_btn btn btn-secondary btn-block me-5"><i class="bi bi-search"></i></button>
+                              <a href="" class="btn col-md-2 lucky">Мне повезёт!</a>
+                     </div>
+
+                  </div>
+                  <div class="mt-3">
+
+                     <div class="collapse" id="collapseExample">
+                        <div class="card p-0 card-body">
+                           <div class="row p-0 m-0">
+
+                              <a href="#" class="col-md-2 py-3 border">Супы</a>
+                              <a href="#" class="col-md-2 py-3 border">Гарниры</a>
+                              <a href="#" class="col-md-2 py-3 border">Гуляши</a>
+                              <a href="#" class="col-md-2 py-3 border">Салаты</a>
+                              <a href="#" class="col-md-2 py-3 border">Напитки</a>
+                              <a href="#" class="col-md-2 py-3 border">Десерты</a>
+                           </div>
+
+                        </div>
+
+                        <div class="card card-body">
+                           <div class="row">
+                              <h4 class="col-md-1">Цена</h4>
+                              <div class="col-md-2">
+                                 <input type="text" class="form-control" placeholder="Мин">
+                              </div>
+                              <div class="col-md-2">
+                                 <input type="text" class="form-control" placeholder="Макс">
+                              </div>
+                           </div>
+
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- Поиск и фильтры -->
+
+         <div class="container m-0 p-0">
+            <div class="row container m-0 p-0">
+               <div class="row col-lg-12  m-0 p-0">
+
+                   {% for dish in dishes %}
+                       <div class=" product-cart col-lg-12">
+                         <div class="product-thumb">
+                            <a href="#" class="p-0 pb-2"><img src="{{ dish.image1.url }}" alt="img" class="mw95"></a>
+                         </div>
+                         <div class="product-details">
+                            <h4><a href="{{ dish.get_product_url }}">{{ dish.title }}</a></h4>
+                         </div>
+                         <div class="product-bottom-details">
+                            <div class="product-bottom d-flex justify-content-between align-items-center">
+                               <p>{{ dish.price }}₽</p>
+                               <a href="dish.html" class="basketa"><div class="basket_hover"></div><i class="bi bi-basket3-fill t123"></i><i class="bi bi-basket3"></i></a>
+                            </div>
+                         </div>
+                  </div>
+
+                   {% endfor %}
+
+               </div>
+            </div>
+         </div>
+         <nav class="d-flex justify-content-center my-3">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Предыдущая">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Следующая">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+      </div>
+   </section>
+{% endblock content %}
+   <footer class="footer">
+      <div class="container">
+         <p class="p-4 m-0 text-center">ООО «ТЕХНОВИЗОР»</p>
+      </div>
+   </footer>
+   <script type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"></script>
+   <script src="{% static 'js/main.js' %}"></script>
 </body>
+
 </html>
