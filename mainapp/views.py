@@ -1,3 +1,6 @@
+import math
+import random
+
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.db import transaction
@@ -19,6 +22,11 @@ class Menu(CartMixin, View):
     def get(self, request, *args, **kwargs):
         category_obj = Category.objects.all()
         category = []
+        dishes_on_page = 8
+        last_page = math.ceil(Dish.objects.count()/dishes_on_page)
+
+        print(last_page)
+
         for category_slug in category_obj:
             try:
                 cat = int(request.GET.get(category_slug.slug))
@@ -36,6 +44,9 @@ class Menu(CartMixin, View):
             search = ""
         if search == None:
             search = ""
+        search_lower = search.lower()
+        search_upper = search.capitalize()
+
         try:
             sort_by = request.GET.get("sort_by")
         except:
@@ -53,9 +64,18 @@ class Menu(CartMixin, View):
         else:
             dishes = Dish.objects.all()
         if search != "":
+            print(search_upper)
+            dishes_l = dishes.filter(title__contains=search_lower)
+            dishes_r = dishes.filter(title__contains=search_upper)
             dishes = dishes.filter(title__contains=search)
-        dishes = dishes.order_by(sort_by)[8 * page - 8:page * 8]
-        return render(request, "base.html/", {'dishes':dishes, 'cart':self.cart, 'category_obj': category_obj})
+            if dishes.count() == 0:
+                print(search_upper)
+                dishes = dishes_l
+                if dishes_l.count() == 0:
+                    print(search_upper)
+                    dishes = dishes_r
+        dishes = dishes.order_by(sort_by)[dishes_on_page * page - dishes_on_page:page * dishes_on_page]
+        return render(request, "base.html/", {'dishes':dishes, 'cart':self.cart, 'category_obj': category_obj, 'page': page, 'last_page': last_page})
 
 def page_not_found_view(request, exception):
     return render(request, "base.html", status=404)
@@ -149,7 +169,12 @@ def logout_user(request):
     logout(request)
     return redirect('login')
 
-
+def lucky(request):
+    count = Dish.objects.count()
+    print("count - " + str(count))
+    dish = Dish.objects.filter(id=random.randint(1,count))
+    url = dish[0].get_product_url()
+    return redirect(f'/add-to-cart/{url}/?quantity=1')
 
 class AddToCartView(CartMixin,View):
 

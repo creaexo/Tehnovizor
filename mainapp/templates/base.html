@@ -82,7 +82,7 @@
                         <input type="text" class="form-control d-flex me-4"
                            placeholder="Введите название блюда" form="search" name="s">
                               <button class="search_btn btn btn-secondary btn-block me-5" form="search"><i class="bi bi-search"></i></button>
-                              <a href="" class="btn col-md-2 lucky">Мне повезёт!</a>
+                              <a href="{% url 'lucky' %}" class="btn col-md-2 lucky">Мне повезёт!</a>
                      </div>
 
                   </div>
@@ -148,10 +148,10 @@
 
                        <div class=" product-cart col-lg-12">
                          <div class="product-thumb">
-                            <a href="#" class="p-0 pb-2"><img src="{{ dish.image1.url }}" alt="img" class="mw95"></a>
+                            <a href="#" class="p-0 pb-3 pt-3"><img src="{{ dish.image1.url }}" alt="img" class="mw95"></a>
                          </div>
                          <div class="product-details">
-                            <h4><a href="dish/{{ dish.get_product_url }}">{{ dish.title }}</a></h4>
+                            <h4 class="overflow-hidden text-nowrap text-ellipsis"><a href="dish/{{ dish.get_product_url }}">{{ dish.title }}</a></h4>
                          </div>
                          <div class="product-bottom-details">
                             <div class="product-bottom d-flex justify-content-between align-items-center">
@@ -172,22 +172,27 @@
                </div>
             </div>
          </div>
-          {% if dishes.count > 9 %}
+          {% if last_page != 1 %}
          <nav class="d-flex justify-content-center my-3">
             <ul class="pagination">
+                {% if page != 1 %}
               <li class="page-item">
-                <a class="page-link" href="#" aria-label="Предыдущая">
+                <a class="page-link" href="?p=1" aria-label="Первая">
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="?p={{ page|add:-1 }}">{{ page|add:-1 }}</a></li>
+                {% endif %}
+
+              <li class="page-item"><a class="page-link" href="?p={{ page }}">{{ page }}</a></li>
+                          {% if page != last_page %}
+              <li class="page-item"><a class="page-link" href="?p={{ page|add:1 }}">{{ page|add:1 }}</a></li>
               <li class="page-item">
-                <a class="page-link" href="#" aria-label="Следующая">
+                <a class="page-link" href="?p={{ last_page }}" aria-label="Последняя">
                   <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>
+                {% endif %}
             </ul>
           </nav>
       {% endif %}
