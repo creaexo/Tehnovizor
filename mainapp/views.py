@@ -15,10 +15,47 @@ from .utils import recalc_cart
 
 # Create your views here.
 class Menu(CartMixin, View):
-    dishes = Dish.objects.filter()
     # print(dishes.values())
     def get(self, request, *args, **kwargs):
-        return render(request, "base.html", {'dishes':self.dishes, 'cart':self.cart,})
+        category_obj = Category.objects.all()
+        category = []
+        for category_slug in category_obj:
+            try:
+                cat = int(request.GET.get(category_slug.slug))
+                category.append(category_slug.slug)
+            except:
+                pass
+
+        # try:
+        #     category = request.GET.get("arr").strip('][').split(', ')
+        # except:
+        #     category = ['*']
+        try:
+            search = request.GET.get("s")
+        except:
+            search = ""
+        if search == None:
+            search = ""
+        try:
+            sort_by = request.GET.get("sort_by")
+        except:
+            sort_by = "-id"
+        if sort_by == None:
+            sort_by = "-id"
+        try:
+            page = int(request.GET.get("p"))
+        except:
+            page = 1
+        if page is None:
+            page = 1
+        if category:
+            dishes = Dish.objects.filter(category__slug__in=category)
+        else:
+            dishes = Dish.objects.all()
+        if search != "":
+            dishes = dishes.filter(title__contains=search)
+        dishes = dishes.order_by(sort_by)[8 * page - 8:page * 8]
+        return render(request, "base.html/", {'dishes':dishes, 'cart':self.cart, 'category_obj': category_obj})
 
 def page_not_found_view(request, exception):
     return render(request, "base.html", status=404)
@@ -111,6 +148,8 @@ class CartView(CartMixin, View):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+
 
 class AddToCartView(CartMixin,View):
 
