@@ -112,7 +112,7 @@ class CartView(CartMixin, View):
         products_to_cart = self.cart.products.all().values('object_id','qty')
         dishes_to_cart = []
         for i in products_to_cart:
-            dishes_to_cart.append([Dish.objects.filter(category__dish__id=i['object_id']),i['qty']])
+            dishes_to_cart.append([Dish.objects.filter(id=i['object_id']),i['qty']])
         print('erwerwerwer  -  '+str(products_to_cart))
         print(dishes_to_cart)
 
@@ -180,7 +180,7 @@ class AddToCartView(CartMixin,View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            product = Dish.objects.filter(category__dish__slug=kwargs.get('slug'))
+            product = Dish.objects.filter(slug=kwargs.get('slug'))
             print('product --- ' + str(product.values()))
             quantity = request.GET.get("quantity")
             try:
@@ -221,7 +221,7 @@ class AddToCartView(CartMixin,View):
 
 class DeleteFromCartView(CartMixin, View):
     def get(self, request, *args, **kwargs):
-        product = Dish.objects.filter(category__dish__slug=kwargs.get('slug'))
+        product = Dish.objects.filter(slug=kwargs.get('slug'))
         cart_product = CartDish.objects.get(
             user=self.cart.owner, cart=self.cart, object_id=product[0].id
         )
@@ -240,7 +240,7 @@ class CheckoutView(CartMixin, View):
         products_to_cart = self.cart.products.all().values('object_id','qty','final_price')
         dishes_to_cart = []
         for i in products_to_cart:
-            dishes_to_cart.append([Dish.objects.filter(category__dish__id=i['object_id']),i['qty'],i['final_price']])
+            dishes_to_cart.append([Dish.objects.filter(id=i['object_id']),i['qty'],i['final_price']])
 
         context = {
             'cart': self.cart,
@@ -252,7 +252,7 @@ class CheckoutView(CartMixin, View):
 class ChangeQTYView(CartMixin, View):
 
     def post(self, request, *args, **kwargs):
-        product = Dish.objects.filter(category__dish__slug=kwargs.get('slug'))
+        product = Dish.objects.filter(slug=kwargs.get('slug'))
 
         cart_product = CartDish.objects.get(
             user=self.cart.owner,
