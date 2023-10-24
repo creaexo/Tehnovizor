@@ -13,7 +13,7 @@
                   <li class="breadcrumb-item active" aria-current="page">{{ dish.title }}</li>
                </ol>
             </nav>
-            <a href="cart.html" class="basketa basketa_big d-flex"><div class="basket_hover"></div><i class="bi bi-basket3-fill t123"></i><i class="bi bi-basket3"></i><p class="m-0 fs-5 cart_count">3</p></a>
+            <a href="{% url 'cart' %}" class="basketa basketa_big d-flex"><div class="basket_hover"></div><i class="bi bi-basket3-fill t123"></i><i class="bi bi-basket3"></i><p class="m-0 fs-5 cart_count">{{ cart.total_products }}</p></a>
          </div>
 
 

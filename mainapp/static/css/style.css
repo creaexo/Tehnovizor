@@ -320,3 +320,8 @@ a.lucky:hover{
 .invalid-form ::-webkit-input-placeholder{
     color: var(--red);
 }
+
+.invisible_cart{
+    opacity: 0;
+    z-index: 100;
+}

@@ -44,7 +44,7 @@ class Dish(models.Model):
     price = models.DecimalField(verbose_name='Цена',max_digits=5, decimal_places=2)
 
     def get_product_url(obj):
-        return f"dish/{obj.category.slug}/{obj.slug}"
+        return f"{obj.category.slug}/{obj.slug}"
     def __str__(self):
         return self.title
 
@@ -72,9 +72,10 @@ class Employee(models.Model):
 class CartDish(models.Model):
     user = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name="Покупатель")
     cart = models.ForeignKey('Cart', on_delete=models.CASCADE, verbose_name="Корзина", related_name='related_products')
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name='Пренадлежность к категориям')
+    dish = models.ForeignKey(Dish, verbose_name='Блюдо', related_name="dishes", on_delete=models.CASCADE, default=1)
+    # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name='Пренадлежность к категориям')
     object_id = models.PositiveIntegerField(verbose_name='ID товара')
-    content_object = GenericForeignKey('content_type', 'object_id')
+    # content_object = GenericForeignKey('content_type', 'object_id')
     qty = models.PositiveIntegerField(default=1, verbose_name='Количество единиц товара')
     final_price = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Общая цена')
     glist = models.TextField(verbose_name="Параметры", default='')
@@ -84,10 +85,10 @@ class CartDish(models.Model):
         verbose_name_plural = 'Продукты в корзине'
 
     def __str__(self):
-        return "Продукт: {} (для корзины)".format(self.content_object.title)
+        return "Продукт: {} (для корзины)".format(self.dish.title)
 
     def save(self, *args, **kwargs):
-        self.final_price = self.qty * self.content_object.price
+        self.final_price = self.qty * self.dish.price
         super().save(*args, **kwargs)
 
 
@@ -98,7 +99,7 @@ class Cart(models.Model):
     total_products = models.PositiveIntegerField(default=0, verbose_name='Количество продуктов')
     final_price = models.DecimalField(max_digits=9, default=0, decimal_places=2, verbose_name='Общая цена')
     in_order = models.BooleanField(default=False, verbose_name='Заказан')
-    for_anonymous_user = models.BooleanField(default=False, verbose_name='От анонимного покупателя')
+    # for_anonymous_user = models.BooleanField(default=False, verbose_name='От анонимного покупателя')
 
     class Meta:
         verbose_name = 'Корзина'
@@ -106,8 +107,13 @@ class Cart(models.Model):
 
     def __str__(self):
         return str(self.id)
-
-
+    # print(products.id)
+    # def get_nominations(self):
+    #     nomination_list = self.products
+    #     nominations_str = ''
+    #     for nomination in nomination_list:
+    #         nominations_str += ', ' + nomination.title
+    #     return nominations_str.lstrip(', ')
 class Order(models.Model):
 
     STATUS_CANSEL = 'cansel'

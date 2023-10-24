@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+   <section class="main-content min-h-800">
+
+
+      <div class="container mt-4">
+         <div class="d-flex justify-content-between">
+            <h1>Корзина</h1>
+            <a href="checkout.html" class="btn btn-success checkout">Оформить заказ</a>
+         </div>
+
+
+
+         <div class="container m-0 p-0">
+            <div class="row container m-0 p-0">
+               <div class="row col-lg-12  m-0 p-0">
+                    {% for dish in dishes_to_cart %}
+                  <div class=" product-cart product">
+                     <div class="relative"><a href="delete-form-cart/{{ dish.0.0.get_product_url }}" class="delete"><p class="fs-5 text-end mb-0 mt-1"><i class="bi bi-trash-fill"></i></p></a></div>
+
+                     <div class="product-thumb">
+                        <a href="#" class="mt-0"><img src="{{ dish.0.0.image1.url }}" alt="img" class="mw95"></a>
+                     </div>
+                     <div class="product-details">
+                        <h4><a href="dish/{{ dish.0.0.get_product_url }}">{{ dish.0.0.title }}</a></h4>
+                     </div>
+                     <div class="product-bottom-details">
+                        <div class="product-bottom d-flex justify-content-between align-items-center">
+                           <p>{{ dish.0.0.price }}₽</p>
+                           <span class="count me-1">
+                              <span class="change minus min">
+                                  <span>-</span>
+                              </span>
+                              <input type="text" name="productСount" value="{{ dish.1 }}">
+                              <span class="change plus">
+                                  <span>+</span>
+                              </span>
+                          </span>
+                        </div>
+                     </div>
+                  </div>
+                    {% endfor %}
+
+               </div>
+            </div>
+         </div>
+
+      </div>
+   </section>
+{% endblock content %}
+
+
