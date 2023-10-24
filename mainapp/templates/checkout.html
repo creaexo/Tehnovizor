@@ -2,7 +2,84 @@
 
 {% load static %}
 {% block content %}
+   <section class="main-content min-h-800">
 
+      <h1 class="my-4">Оформление заказа</h1>
+      <table class="table container">
+         <thead>
+            <tr>
+               <th>Наименование</th>
+               <th>Изображение</th>
+               <th>Цена</th>
+               <th>Кол-во</th>
+               <th>Общая цена</th>
+            </tr>
+         </thead>
+         <tbody>
+
+            {% for item in dishes_to_cart %}
+            {{ item }}
+            {% if item.0.0.title %}
+            <tr class="mtr">
+               <th>{{ item.0.0.title }}</th>
+               <td class=""><img src="{{ item.0.0.image1.url }}" class="order_img h200p"></td>
+               <td>{{ item.0.0.price }} руб.</td>
+               <td class="qty_items">{{ item.1 }}</td>
+               <td class="final_price_items">{{ item.2 }}</td>
+            </tr>
+            {% else %}
+            <input type="checkbox" id="___not_in_order___{{ item.0.0.slug }}" class="check invisible"
+               form="order" name="___not_in_order___{{ item.0.0.slug }}"
+               value="{{ item.0.0.category.slug }}" checked>
+            {% endif %}
+
+            {% endfor %}
+            <tr>
+               <td></td>
+               <td></td>
+               <td>Итого:</td>
+               <td class="total_qty">0</td>
+               <th class="total_price">0</th>
+            </tr>
+         </tbody>
+      </table>
+
+      <h1 class="text-center my-3">Заказ</h1>
+      <form class="container col-md-5 border p-3 shadow"><!-- was-validated -->
+
+         <div class="d-flex col-md-10 justify-content-between">
+            <div class="form-check mb-3">
+            <input type="radio" class="form-check-input" id="validationFormCheck2" name="radio-stacked" required>
+            <label class="form-check-label" for="validationFormCheck2">Забрать в столовой</label>
+         </div>
+            <div class="form-check mb-3">
+               <input type="radio" class="form-check-input" id="validationFormCheck3" name="radio-stacked" required>
+               <label class="form-check-label" for="validationFormCheck3">Принести к рабочему месту</label>
+            </div>
+            <div class="form-check mb-3">
+               <input type="checkbox" class="form-check-input" id="validationFormCheck1" required>
+               <label class="form-check-label" for="validationFormCheck1">Выбрать дату и время</label>
+            </div>
+         </div>
+
+
+         <div class="d-flex w-100 mb-3">
+            <input id="startDate" class="form-control vw-100" type="date" disabled/>
+            <input id="startTime" type="time" class="form-control" value="10:05 AM" disabled/>
+          </div>
+
+
+
+         <div class="mb-3">
+            <label for="validationTextarea" class="form-label ps-75">Коментарий к заказу</label>
+            <textarea class="form-control" id="validationTextarea" placeholder="Введите ваш коментарий"
+               required></textarea>
+         </div>
+         <div class="col-md-12">
+            <a class="btn btn-success order col-md-12" type="submit" disabled>Заказать</a>
+         </div>
+      </form>
+   </section>
 {% endblock content %}
 
 

@@ -314,6 +314,10 @@ a.lucky:hover{
 .h380p{
     height: 380px;
 }
+.order_img{
+    height: auto;
+    max-width: 200px;
+}
 .invalid-form input{
     border: 1px solid var(--red);
 }
