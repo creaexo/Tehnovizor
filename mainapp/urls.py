@@ -10,5 +10,5 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('add-to-cart/<str:ct_model>/<str:slug>/', AddToCartView.as_view(), name='add_to_cart'),
     path('delete-form-cart/<str:ct_model>/<str:slug>/', DeleteFromCartView.as_view(), name='delete_form_cart'),
-    # path('change_qty/<str:ct_model>/<str:slug>/', ChangeQTYView.as_view(), name='change_qty'),
+    path('change-qty/<str:ct_model>/<str:slug>/', ChangeQTYView.as_view(), name='change_qty'),
 ]

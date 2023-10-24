@@ -46,7 +46,7 @@
       </nav>
    </header>
 {% block content %}
-   <section class="main-content">
+   <section class="main-content min-h-800">
 
 
       <div class="container mt-4">
@@ -126,6 +126,7 @@
                <div class="row col-lg-12  m-0 p-0">
 
                    {% for dish in dishes %}
+
                        <div class=" product-cart col-lg-12">
                          <div class="product-thumb">
                             <a href="#" class="p-0 pb-2"><img src="{{ dish.image1.url }}" alt="img" class="mw95"></a>
@@ -152,6 +153,7 @@
                </div>
             </div>
          </div>
+          {% if dishes.count > 9 %}
          <nav class="d-flex justify-content-center my-3">
             <ul class="pagination">
               <li class="page-item">
@@ -169,6 +171,7 @@
               </li>
             </ul>
           </nav>
+      {% endif %}
       </div>
    </section>
 {% endblock content %}
@@ -183,6 +186,7 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"></script>
    <script src="{% static 'js/main.js' %}"></script>
+   <script src="{% static 'js/checkout.js' %}"></script>
 </body>
 
 </html>

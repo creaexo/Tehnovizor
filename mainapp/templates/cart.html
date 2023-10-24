@@ -29,15 +29,25 @@
                      <div class="product-bottom-details">
                         <div class="product-bottom d-flex justify-content-between align-items-center">
                            <p>{{ dish.0.0.price }}₽</p>
-                           <span class="count me-1">
-                              <span class="change minus min">
+                            <form action="change-qty/{{ dish.0.0.get_product_url }}/" class="qch count me-1" id="form_{{ dish.0.0.get_product_url }}" method="post">
+                              <button class="change d-none" onclick="triggerButton1Click()">
+                              </button>
+{#                           <span class="count me-1">#}
+                              <button class="change minus min" onclick="triggerButton1Click()">
                                   <span>-</span>
-                              </span>
-                              <input type="text" name="productСount" value="{{ dish.1 }}">
-                              <span class="change plus">
+                              </button>
+
+
+                                <input type="number" step="1" min="1" max="100" id="num_count" name="quantity" value="{{ dish.1 }}" title="Qty" class="number2-text "form="form_{{ dish.0.0.get_product_url }}">
+
+{#                              <input type="text" name="productСount" value="{{ dish.1 }}">#}
+                                {% csrf_token %}
+                              <button class="change plus" onclick="triggerButton1Click()">
                                   <span>+</span>
-                              </span>
-                          </span>
+                              </button>
+                                <input type="submit" class="chq d-none" form="form_{{ dish.0.0.get_product_url }}">
+{#                          </span>#}
+                           </form>
                         </div>
                      </div>
                   </div>

@@ -4,8 +4,9 @@
 {% block content %}
    <section class="main-content min-h-800">
 
-      <h1 class="my-4">Оформление заказа</h1>
+      <h1 class="my-4 container">Оформление заказа</h1>
       <table class="table container">
+
          <thead>
             <tr>
                <th>Наименование</th>
@@ -18,7 +19,6 @@
          <tbody>
 
             {% for item in dishes_to_cart %}
-            {{ item }}
             {% if item.0.0.title %}
             <tr class="mtr">
                <th>{{ item.0.0.title }}</th>
@@ -74,27 +74,20 @@
 {#      </form>#}
       <form action="{% url 'make_order' %}" method="POST" id="order" class="person container col-md-5 border p-3 shadow"><!-- was-validated -->
         {% csrf_token %}
-         <div class="d-flex col-md-10 justify-content-between">
-            <div class="form-check mb-3">
-            <input type="radio" class="form-check-input" id="validationFormCheck2" name="radio-stacked" required>
-            <label class="form-check-label" for="validationFormCheck2">Забрать в столовой</label>
-         </div>
-            <div class="form-check mb-3">
-               <input type="radio" class="form-check-input" id="validationFormCheck3" name="radio-stacked" required>
-               <label class="form-check-label" for="validationFormCheck3">Принести к рабочему месту</label>
-            </div>
-            <div class="form-check mb-3">
-               <input type="checkbox" class="form-check-input" id="validationFormCheck1" required>
+         <div class="row d-flex align-items-center col-md-10 ms-0 my-3">
+{{ form.buying_type }}
+            <div class="form-check col-md-4">
+               <input type="checkbox" class="form-check-input" id="validationFormCheck1">
                <label class="form-check-label" for="validationFormCheck1">Выбрать дату и время</label>
             </div>
          </div>
 {#{{ form.comment }}#}
-<select name="buying_type" id="id_buying_type">
-  <option value="self" selected>В столовой</option>
-
-  <option value="delivery">Доставить на рабочее место</option>
-
-</select>
+{#<select name="buying_type" id="id_buying_type">#}
+{#  <option value="self" selected>В столовой</option>#}
+{##}
+{#  <option value="delivery">Доставить на рабочее место</option>#}
+{##}
+{#</select>#}
 
          <div class="d-flex w-100 mb-3">
             <input id="startDate" name="order_date" class="form-control vw-100" type="date" disabled/>

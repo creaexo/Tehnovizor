@@ -42,8 +42,9 @@ class OrderForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['order_date'].label = 'Дата получения'
 
-    order_date = forms.DateField(widget=forms.TextInput(attrs={'type': 'date', 'min': f"{datetime.today().strftime('%Y-%m-%d')}"}))
-    order_time = forms.TimeField(widget=forms.TextInput(attrs={'type': 'time', 'min': f"{datetime.today().strftime('%CC-%MM')}"}))
+    buying_type = forms.ChoiceField(choices=Order.BUYING_TYPE_CHOICES,widget=forms.Select(attrs={'class':'col-md-4 form-select me-4'}))
+    order_date = forms.DateField(required=False, widget=forms.TextInput(attrs={'type': 'date', 'min': f"{datetime.today().strftime('%Y-%m-%d')}"}))
+    order_time = forms.TimeField(required=False,widget=forms.TextInput(attrs={'type': 'time', 'min': f"{datetime.today().strftime('%CC-%MM')}"}))
     comment = forms.CharField(label='Комментарий к заказу',widget=forms.Textarea(attrs={'class': 'fs20','placeholder': 'Ваш комментарий...'}))
     products_information = forms.CharField(label='',widget=forms.Textarea(attrs={'class': 'full_invisible_absolute'}))
     # buying_type = forms.RadioSelect(label='Комментарий к заказу')
