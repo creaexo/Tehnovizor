@@ -84,17 +84,26 @@
                <h4 class="dark-grey">Пицевая ценность/100гр: {{ dish.calories }}Ккал, {{ dish.proteins }}Б, {{ dish.fats }}Ж, {{ dish.carb }}У</h4>
                <div class="d-flex align-items-center mt-5">
                   <h2 class="fs-1 mb-0 fw-bold me-4">{{ dish.price }}₽</h2>
-                  <span class="count me-4">
-                     <span class="change minus min">
-                         <span>-</span>
-                     </span>
-                     <input type="text" name="productСount" value="1">
-                     <span class="change plus">
-                         <span>+</span>
-                     </span>
-                 </span>
-                  <a href="#" class="btn btn-success order fw-normal fs-3 d-flex">
-                     Добавить <i class="bi bi-basket3-fill"></i></a>
+                            <form action="/change-qty/{{ dish.get_product_url }}/" class="qch count me-1" id="form_product" method="post">
+                              <button class="change d-none">
+                              </button>
+{#                           <span class="count me-1">#}
+                              <span class="change minus min">
+                                  <span>-</span>
+                              </span>
+
+                                <input type="number" step="1" min="1" max="100" id="num_count" name="quantity" value="{{ qty }}" title="Qty" class="number2-text "form="form_product">
+
+{#                              <input type="text" name="productСount" value="{{ dish.1 }}">#}
+                                {% csrf_token %}
+                              <span class="change plus">
+                                  <span>+</span>
+                              </span>
+                                <input type="submit" class="chq d-none" form="form_product">
+{#                          </span>#}
+                           </form>
+                  <button class="btn btn-success order fw-normal fs-3 d-flex" form="form_product">
+                     Добавить <i class="bi bi-basket3-fill"></i></button>
                </div>
 
             </div>

@@ -20,6 +20,7 @@ from .utils import recalc_cart
 class Menu(CartMixin, View):
     # print(dishes.values())
     def get(self, request, *args, **kwargs):
+        active = 'menu'
         category_obj = Category.objects.all()
         category = []
         dishes_on_page = 8
@@ -75,7 +76,7 @@ class Menu(CartMixin, View):
                     print(search_upper)
                     dishes = dishes_r
         dishes = dishes.order_by(sort_by)[dishes_on_page * page - dishes_on_page:page * dishes_on_page]
-        return render(request, "base.html/", {'dishes':dishes, 'cart':self.cart, 'category_obj': category_obj, 'page': page, 'last_page': last_page})
+        return render(request, "base.html/", {'dishes':dishes, 'cart':self.cart, 'category_obj': category_obj, 'active': active, 'page': page, 'last_page': last_page})
 
 def page_not_found_view(request, exception):
     return render(request, "base.html", status=404)
@@ -84,6 +85,8 @@ class DishView(CartMixin, DetailView):
 
     def dispatch(self, request, *args, **kwargs):
         self.queryset = Dish._base_manager.all()
+        print('queryset - ' + str(self.queryset))
+        # .cart.products.all().values('object_id', 'qty')
         return super().dispatch(request, *args, **kwargs)
 
     context_object_name = 'dish'
@@ -93,6 +96,8 @@ class DishView(CartMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['cart'] = self.cart
+        context['qty'] = CartDish.objects.filter(dish=context['dish'])[1].qty
+        # print('queryset - '+str(context['qty'][1].qty))
         return context
 
 class LoginUser(LoginView):
@@ -100,6 +105,7 @@ class LoginUser(LoginView):
     template_name = 'login.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        kwargs['active'] = 'login'
         context = super().get_context_data(**kwargs)
         return dict(list(context.items()))
 
@@ -109,6 +115,18 @@ class LoginUser(LoginView):
 
 class CartView(CartMixin, View):
     def get(self, request, *args, **kwargs):
+
+        print('erwerwerwer  -  '+str(self.products_to_cart))
+        print(self.dishes_to_cart)
+
+        context = {
+            'cart': self.cart,
+            'dishes_to_cart': self.dishes_to_cart
+        }
+        return render(request, 'cart.html', context)
+class HistoryView(CartMixin, View):
+    def get(self, request, *args, **kwargs):
+        active = 'history'
         products_to_cart = self.cart.products.all().values('object_id','qty')
         dishes_to_cart = []
         for i in products_to_cart:
@@ -118,9 +136,10 @@ class CartView(CartMixin, View):
 
         context = {
             'cart': self.cart,
+            'active': active,
             'dishes_to_cart': dishes_to_cart
         }
-        return render(request, 'cart.html', context)
+        return render(request, 'history.html', context)
 # class AddToCartView(CartMixin,View):
 #
 #     def get(self, request, *args, **kwargs):

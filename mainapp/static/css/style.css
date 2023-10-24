@@ -8,6 +8,10 @@
     --bs-navbar-brand-color: #737373;
     --red: rgb(165, 23, 23);
 }
+body{
+    position: relative;
+    min-height: 100vh;
+}
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     color: #6b6b6b;
 }
@@ -222,8 +226,14 @@ button.btn-primary.btn-login:active{
 }
 @media screen and (width > 1400px) {
     
-.min-h-800 {
+.min-h-800, section.min-h-800 {
     min-height: 800px;
+}
+}
+@media screen and (width > 1200px) {
+
+.min-h-800, section.min-h-800 {
+    min-height: 750px;
 }
 }
 
@@ -357,4 +367,14 @@ input[type=checkbox]:checked+label{
 }
 .text-ellipsis{
      text-overflow: ellipsis;
+}
+
+footer{
+    position: absolute;
+    bottom: -72px;
+    width: 100%;
+}
+
+button.change{
+    border: none;
 }

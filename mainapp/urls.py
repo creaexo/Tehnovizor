@@ -4,6 +4,7 @@ urlpatterns = [
     path('', Menu.as_view(), name='main'),
     path('dish/<str:ct_model>/<str:slug>/', DishView.as_view(), name='dish'),
     path('login', LoginUser.as_view(), name='login'),
+    path('history', HistoryView.as_view(), name='history'),
     path('cart', CartView.as_view(), name='cart'),
     path('checkout', CheckoutView.as_view(), name='checkout'),
     path('make-order', MakeOrderView.as_view(), name='make_order'),
