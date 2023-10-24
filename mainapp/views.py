@@ -185,6 +185,22 @@ class CheckoutView(CartMixin, View):
         }
         return render(request, 'checkout.html', context, **kwargs)
 
+# class ChangeQTYView(CartMixin, View):
+#
+#     def post(self, request, *args, **kwargs):
+#         product = Dish.objects.filter(category__dish__slug=kwargs.get('slug'))
+#
+#         cart_product = CartDish.objects.get(
+#             user=self.cart.owner,
+#             cart=self.cart,
+#             object_id=product[0].id)
+#         qty = int(request.POST.get('quantity'))
+#         cart_product.qty = qty
+#         cart_product.save()
+#         recalc_cart(self.cart)
+#         messages.add_message(request, messages.INFO, "Кол-во успешно изменено")
+#         print(request.POST)
+#         return HttpResponseRedirect('/cart/')
 
 class MakeOrderView(CartMixin, View):
 
@@ -193,12 +209,13 @@ class MakeOrderView(CartMixin, View):
 
         form = OrderForm(request.POST or None)
         customer = Employee.objects.get(user=request.user)
-
+        for i in form:
+            print(i)
         if form.is_valid():
             recalc_cart(self.cart)
 
             new_order = form.save(commit=False)
-            new_order.customer = customer
+            new_order.employee = customer
             new_order.buying_type = form.cleaned_data['buying_type']
             new_order.order_date = form.cleaned_data['order_date']
             new_order.order_time = form.cleaned_data['order_time']
@@ -218,4 +235,4 @@ class MakeOrderView(CartMixin, View):
 
             messages.add_message(request, messages.INFO, 'Спасибо за заказ! Менеджер с Вами свяжется')
             return HttpResponseRedirect('/')
-        return HttpResponseRedirect('/checkout/')
+        return HttpResponseRedirect('/checkout')
