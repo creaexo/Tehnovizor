@@ -40,7 +40,7 @@ class Dish(models.Model):
     proteins = models.DecimalField(verbose_name='Белки',max_digits=5, decimal_places=1, blank=True)
     fats = models.DecimalField(verbose_name='Жиры',max_digits=5, decimal_places=1, blank=True)
     carb = models.DecimalField(verbose_name='Углеводы',max_digits=5, decimal_places=1, blank=True)
-    description = models.TextField(verbose_name='Описание', blank=True)
+    description = models.TextField(verbose_name='Состав/Описание', blank=True)
     price = models.DecimalField(verbose_name='Цена',max_digits=5, decimal_places=2)
 
     def get_product_url(obj):

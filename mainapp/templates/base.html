@@ -26,19 +26,19 @@
                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse show" id="navbarText">
-               <ul class="navbar-nav me-auto mbz-2 mb-xl-0">
+               <ul class="navbar-nav me-auto mb-2 mb-xl-0">
                   <li class="nav-item">
-                     <a class="nav-link {% if active == 'menu' %}active{% endif %} fs-6" aria-current="page" href="{% url 'main' %}">Меню</a>
+                     <a class="nav-link active fs-6" aria-current="page" href="{% url 'main' %}">Меню</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link fs-6 {% if active == 'history' %}active{% endif %}" href="{% url 'history' %}">История заказов</a>
+                     <a class="nav-link fs-6" href="{% url 'history' %}">История заказов</a>
                   </li>
                </ul>
                 {% if request.user.is_authenticated %}
                <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
                     {% else %}
 
-               <a class="nav-link {% if active == 'login' %}active{% endif %}" href="{% url 'login' %}">Авторизация</a>
+               <a class="nav-link" href="{% url 'login' %}">Авторизация</a>
                 {% endif %}
 
             </div>
@@ -62,10 +62,10 @@
 
                   <div class="search_content row g-4 d-flex justify-content-between align-items-center mt-3">
                      <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
-                        aria-controls="collapseExample" class="advanced col-md-1 ms-3">
+                        aria-controls="collapseExample" class="advanced text-nowrap col-md-3 col-lg-1 ms-3">
                         Фильтры <i class="bi bi-sort-down"></i>
                      </a>
-                     <div class="col-md-2">
+                     <div class="col-lg-2 col-md-3">
 
                         <select class="form-select-sm sort-by btn btn-secondary dropdown-toggle" name="sort_by" form="search">
 
@@ -82,7 +82,7 @@
                         <input type="text" class="form-control d-flex me-4"
                            placeholder="Введите название блюда" form="search" name="s">
                               <button class="search_btn btn btn-secondary btn-block me-5" form="search"><i class="bi bi-search"></i></button>
-                              <a href="{% url 'lucky' %}" class="btn col-md-2 lucky">Мне повезёт!</a>
+                              <a href="{% url 'lucky' %}" class="btn col-lg-2 col-md-4 lucky">Мне повезёт!</a>
                      </div>
 
                   </div>
