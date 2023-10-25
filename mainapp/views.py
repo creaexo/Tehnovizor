@@ -26,7 +26,6 @@ class Menu(CartMixin, View):
         dishes_on_page = 8
         last_page = math.ceil(Dish.objects.count()/dishes_on_page)
 
-        print(last_page)
 
         for category_slug in category_obj:
             try:
@@ -65,15 +64,12 @@ class Menu(CartMixin, View):
         else:
             dishes = Dish.objects.all()
         if search != "":
-            print(search_upper)
             dishes_l = dishes.filter(title__contains=search_lower)
             dishes_r = dishes.filter(title__contains=search_upper)
             dishes = dishes.filter(title__contains=search)
             if dishes.count() == 0:
-                print(search_upper)
                 dishes = dishes_l
                 if dishes_l.count() == 0:
-                    print(search_upper)
                     dishes = dishes_r
         dishes = dishes.order_by(sort_by)[dishes_on_page * page - dishes_on_page:page * dishes_on_page]
         return render(request, "base.html/", {'dishes':dishes, 'cart':self.cart, 'category_obj': category_obj, 'active': active, 'page': page, 'last_page': last_page})
@@ -85,7 +81,6 @@ class DishView(CartMixin, DetailView):
 
     def dispatch(self, request, *args, **kwargs):
         self.queryset = Dish._base_manager.all()
-        print('queryset - ' + str(self.queryset))
         # .cart.products.all().values('object_id', 'qty')
         return super().dispatch(request, *args, **kwargs)
 
@@ -96,8 +91,11 @@ class DishView(CartMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['cart'] = self.cart
-        context['qty'] = CartDish.objects.filter(dish=context['dish'])[1].qty
-        # print('queryset - '+str(context['qty'][1].qty))
+        try:
+            context['qty'] = CartDish.objects.filter(dish=context['dish'])[1].qty
+        except:
+            context['qty'] =1
+            # print('queryset - '+str(context['qty'][1].qty))
         return context
 
 class LoginUser(LoginView):
@@ -116,9 +114,6 @@ class LoginUser(LoginView):
 class CartView(CartMixin, View):
     def get(self, request, *args, **kwargs):
 
-        print('erwerwerwer  -  '+str(self.products_to_cart))
-        print(self.dishes_to_cart)
-
         context = {
             'cart': self.cart,
             'dishes_to_cart': self.dishes_to_cart
@@ -126,18 +121,34 @@ class CartView(CartMixin, View):
         return render(request, 'cart.html', context)
 class HistoryView(CartMixin, View):
     def get(self, request, *args, **kwargs):
+        orders = Order.objects.all()
+        all_dishes = Dish.objects.all()
+        user_orders = []
+        users_dishes =[]
+        carts_with_employee_id = []
+        for order in orders.values():
+            if order['employee_id'] == request.user.id:
+                carts_with_employee_id.append(order['employee_id'])
+                user_orders.append(
+                    {'cart_id': order['cart_id'],
+                     'status': order['status'],
+                     'buying_type': order['buying_type'],
+                     'created_at': order['created_at'],
+                     'order_date': order['order_date'],
+                     'order_time': order['order_time'],
+                     })
+                print(order['employee_id'])
+                print('----------------------')
+        for carts in CartDish.objects.filter(cart__order__employee_id__in=carts_with_employee_id).values():
+            users_dishes.append(carts)
         active = 'history'
-        products_to_cart = self.cart.products.all().values('object_id','qty')
-        dishes_to_cart = []
-        for i in products_to_cart:
-            dishes_to_cart.append([Dish.objects.filter(id=i['object_id']),i['qty']])
-        print('erwerwerwer  -  '+str(products_to_cart))
-        print(dishes_to_cart)
 
         context = {
             'cart': self.cart,
             'active': active,
-            'dishes_to_cart': dishes_to_cart
+            'user_orders': user_orders,
+            'users_dishes': users_dishes,
+            'all_dishes': all_dishes,
         }
         return render(request, 'history.html', context)
 # class AddToCartView(CartMixin,View):

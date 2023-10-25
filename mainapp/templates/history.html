@@ -6,83 +6,49 @@
 
 
       <div class="container mt-4">
-         <div class="d-flex justify-content-between">
+         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>История заказов</h1>
             <a href="{% url 'cart' %}" class="basketa basketa_big d-flex"><div class="basket_hover"></div><i class="bi bi-basket3-fill t123"></i><i class="bi bi-basket3"></i><p class="m-0 fs-5 cart_count">{{ cart.total_products }}</p></a>
          </div>
-
-
-
          <div class="container m-0 p-0">
-            <div class="row container m-0 p-0">
-               <div class="row col-lg-12  m-0 p-0">
-
-                  <div class=" product-cart history_product_done">
-                     <p class="fs-6 text-end mb-0 mt-1 ">21.10.23 21:29</p>
-                     <div class="product-thumb_history">
-                        <a href="#" class="mt-0"><img src="img/img.jpg" alt="img"></a>
-                     </div>
-                     <div class="product-details">
-                        <h4><a href="#">Product name</a></h4>
-                     </div>
-                     <div class="product-bottom-details">
-                        <div class="product-bottom d-flex justify-content-between align-items-center">
-                           <p>100₽</p>
-                           <p class="fs-5 fw-bolder">Готово</p>
-                        </div>
-                     </div>
-                  </div>
+{#        {% for i in user_orders %}#}
+{#          {{ i }}#}
+{#      {% endfor %}#}
 
 
-                  <div class=" product-cart history_product_wait">
-                     <p class="fs-6 text-end mb-0 mt-1 ">21.10.23 21:29</p>
-                     <div class="product-thumb_history">
-                        <a href="#" class="mt-0"><img src="img/img.jpg" alt="img"></a>
-                     </div>
-                     <div class="product-details">
-                        <h4><a href="#">Product name</a></h4>
-                     </div>
-                     <div class="product-bottom-details">
-                        <div class="product-bottom d-flex justify-content-between align-items-center">
-                           <p>100₽</p>
-                           <p class="fs-5 fw-bolder">Ожидание</p>
-                        </div>
-                     </div>
-                  </div>
+             {% for i in user_orders %}
+            <div class="row container m-0 mb-5 p-0 border px-5 py-4 shadow {% if i.status == 'is_ready' %} history_product_done {% elif i.status == 'in_progress' %} history_product_wait {% else %}history_product_cansel{% endif %}">
+                    <div class="d-flex justify-content-between align-items-center">
+                <p class="fs-3 text-start m-0 ">{% if i.status == 'is_ready' %} Выполнен {% elif i.status == 'in_progress' %} В процессе {% else %}Отменён{% endif %}</p>
+                <p class="fs-6 text-end m-0 ">{{ i.created_at }}</p>
+                    </div>
+                           <div class="row col-lg-12  m-0 p-0">
+                {% for u_dish in users_dishes %}
+                    {% if u_dish.cart_id ==  i.cart_id %}
+                        {% for dish in all_dishes %}
+                            {% if u_dish.object_id == dish.id %}
+                              <div class=" product-cart {% if i.status == 'is_ready' %} history_product_done {% elif i.status == 'in_progress' %} history_product_wait {% else %}history_product_cansel{% endif %}">
+                                 <div class="product-thumb_history mw95">
+                                    <a href="/dish/{{ dish.get_product_url }}" class="mt-0"><img src="{{ dish.image1.url }}" alt="img" class="mw95"></a>
+                                 </div>
+                                 <div class="product-details">
+                                    <h4 class="overflow-hidden text-nowrap text-ellipsis"><a href="#">{{ dish.title }}</a></h4>
+                                 </div>
+                                 <div class="product-bottom-details">
+                                    <div class="product-bottom d-flex justify-content-between align-items-center">
+                                       <p class="fs-5">{{ dish.price }}₽ x {{ u_dish.qty }}</p>
+                                       <p class="fs-5 fw-bolder">{{ u_dish.final_price }}</p>
+                                    </div>
+                                 </div>
+                              </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
 
-                  <div class=" product-cart history_product_cansel">
-                     <p class="fs-6 text-end mb-0 mt-1 ">21.10.23 21:29</p>
-                     <div class="product-thumb_history">
-                        <a href="#" class="mt-0"><img src="img/img.jpg" alt="img"></a>
-                     </div>
-                     <div class="product-details">
-                        <h4><a href="#">Product name</a></h4>
-                     </div>
-                     <div class="product-bottom-details">
-                        <div class="product-bottom d-flex justify-content-between align-items-center">
-                           <p>100₽</p>
-                           <p class="fs-5 fw-bolder">Отмена</p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div class=" product-cart history_product_done">
-                     <p class="fs-6 text-end mb-0 mt-1 ">21.10.23 21:29</p>
-                     <div class="product-thumb">
-                        <a href="#" class="mt-0"><img src="img/img.jpg" alt="img"></a>
-                     </div>
-                     <div class="product-details">
-                        <h4><a href="#">Product name</a></h4>
-                     </div>
-                     <div class="product-bottom-details">
-                        <div class="product-bottom d-flex justify-content-between align-items-center">
-                           <p>100₽</p>
-                           <p class="fs-5 fw-bolder">Выполнен</p>
-                        </div>
-                     </div>
-                  </div>
                </div>
             </div>
+             {% endfor %}
          </div>
          <nav class="d-flex justify-content-center my-3">
             <ul class="pagination">

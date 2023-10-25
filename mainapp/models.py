@@ -153,7 +153,7 @@ class Order(models.Model):
     products_information = models.TextField(verbose_name='Информация о товарах', null=True, blank=True)
     created_at = models.DateTimeField(auto_now=True, verbose_name='Дата создания заказа')
     order_date = models.DateField(verbose_name='Дата получения заказа', default=timezone.now, null=True, blank=True)
-    order_time = models.TimeField(verbose_name='Дата получения заказа', default=timezone.now, null=True, blank=True)
+    order_time = models.TimeField(verbose_name='Время получения заказа', default=timezone.now, null=True, blank=True)
 
     def __str__(self):
         return str(self.id)
